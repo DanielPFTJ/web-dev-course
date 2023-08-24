@@ -1,0 +1,59 @@
+{% extends "polls/base.html" %}
+
+{% block title %} Resultados {% endblock %}
+
+{% block content %}
+ <div class='flex justify-center items-center p-2 h-auto w-screen flex flex-col space-y-4'>
+<div class='h-auto w-96 p-2 bg-lime-100 rounded-2xl justify-between shadow-md'>
+<h1 class="font-bold text-justify text-lime-900 text-xl p-2">{{ question.question_text }}</h1>
+<div class='flex flex-col items-center justify-center p-2 bg-lime-800 rounded-lg'>
+<ul hx-get="/polls/{{question.id}}/results/update"
+    hx-trigger="every 1000ms"
+    hx-target="this"
+    hx-swap="innerHTML">
+{% for choice in question.choice_set.all %}
+    <li class='font-semibold text-white p-2'>{{ choice.choice_text }} | {{ choice.votes }} voto{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+</div>
+</div>
+
+
+{% if question.author == request.user %}
+
+<div class='h-auto w-96 p-2 bg-lime-100 rounded-2xl justify-between shadow-md'>
+<h1 class="font-bold text-justify text-lime-900 text-xl p-2">Votos por usuario:</h1>
+<div class='flex flex-col items-center justify-center p-2 bg-lime-800 rounded-lg'>
+<ul>
+
+
+{% regroup votes by choice as vote_list %}
+
+{% for choice in vote_list %}
+    <li class='font-semibold text-black  p-2'>{{ choice.grouper }} - {{ choice.grouper.votes }}</li>
+    <ul>
+    {% for vote in choice.list %}
+        <li class='font-semibold text-white p-2'>  {{ vote.user.username }}</li>
+    {% endfor %}
+    <ul>                
+{% endfor %}
+
+
+</ul>
+<div class='flex justify-center items-center'>
+    <button hx-get="api/choice/add"
+            hx-target="this"
+            hx-swap="outerHTML"
+            class='flex p-3 font-semibold text-lime-800 bg-lime-50 rounded-full'>
+        Agregar una opción
+    </button>
+</div>
+</div>
+{% endif %}
+</div>
+
+{% comment %}
+  <a href="{% url 'details' question.id %}">¿Votar de nuevo?</a>
+{% endcomment %}
+</div>
+{% endblock content %}

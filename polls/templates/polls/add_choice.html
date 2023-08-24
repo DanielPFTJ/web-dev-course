@@ -1,0 +1,17 @@
+{% if state == 'get' %}
+<li class='p-3' id="current_edit">
+    <input type="text" name="choice_text">
+    <button hx-post="api/choice/add"
+            hx-target="#current_edit"
+            hx-swap="OuterHTML"
+            hx-include="[name='choice_text']"
+            class='text-white'>
+        Guardar
+    </button>
+</li>
+
+
+{% elif state == 'success' %}
+<li class='font-semibold text-white p-2'>opción {{c.choice.text}} añadida correctamente</li>
+{% endif %}
+

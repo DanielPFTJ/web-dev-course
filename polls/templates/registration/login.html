@@ -1,0 +1,49 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+{% if form.errors %}
+<div class='flex justify-center items-align p-2'>
+<div class='bg-red-500 h-auto w-96 rounded-md'>
+<p class='p-2 text-center text-white font-semibold'>Your username and password didn't match. Please try again.</p>
+</div>
+</div>
+{% endif %}
+
+{% if next %}
+<div class='flex justify-center items-align p-2'>
+<div class='bg-red-500 h-auto w-96 rounded-md'>
+    {% if user.is_authenticated %}
+    <p class='p-2 text-center text-white font-semibold'>Tu cuenta no tiene acceso a esta página. Por favor ingrese con una cuenta con los permisos necesarios.</p>
+    {% else %}
+    <p class='p-2 text-center text-white font-semibold'>Por favor inicia sesión para ver el contenido de la página</p>
+    {% endif %}
+</div>
+</div>
+{% endif %}
+
+<div class='flex justify-center items-center p-2 h-auto w-screen flex flex-col space-y-4'>
+<div class='h-auto w-96 p-4 bg-lime-100 rounded-2xl justify-between shadow-md'>
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+    <table>
+    <tr>
+        <td class='text-lime-900 font-semibold'>{{ form.username.label_tag }}</td>
+        <td class='text-lime-900 font-semibold'>{{ form.username }}</td>
+    </tr>
+    <tr>
+        <td class='text-lime-900 font-semibold'>{{ form.password.label_tag }}</td>
+        <td class='text-lime-900 font-semibold' >{{ form.password }}</td>
+    </tr>
+    </table>
+
+<div class="flex justify-center items-align gap-2 pt-2.5">
+    <input  class='flex p-3 font-semibold text-white bg-lime-800 rounded-full hover:bg-lime-900' type="submit" value="Ingresar">
+    <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+{# Assumes you set up the password_reset view in your URLconf #}
+<p class='flex p-3 font-semibold text-white bg-red-500 rounded-full hover:bg-red-600'><a href="{% url 'password_reset' %}">Recuperar contraseña</a></p>
+</div>
+</div>
+</div>
+{% endblock %}

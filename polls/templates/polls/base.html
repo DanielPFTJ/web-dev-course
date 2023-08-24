@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+        <title>{% block title %} Main {% endblock %}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{% static "../static/style.css"  %}" rel="stylesheet">
+    </head>
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' >
+        <div class='flex flex-row-reverse items-center justify-between h-20 w-screen bg-orange-50 drop-shadow-md pr-4 pl-4'>
+            <div class='flex justify-center items-center h-12 w-28 rounded-full bg-lime-800 text-white font-semibold hover:bg-lime-900'>
+
+
+                {% if not user.is_authenticated %}
+                <a href='/accounts/login/'> Login </a>
+                {% else %}
+                <a href='/accounts/logout/'> Logout </a>
+                {% endif %}
+            </div>
+            <h1 class='text-xl font-bold text-lime-800 antialiased'>{{ saludo }}</h1>
+        </div>
+
+    {% block content %}
+
+    {% endblock content %}
+
+    <script src = "https://unpkg.com/htmx.org@1.9.3"></script>
+
+
+    </body>
+</html>

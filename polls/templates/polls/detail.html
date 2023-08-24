@@ -1,0 +1,28 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+
+ <div class='flex justify-center items-center p-2 h-auto w-screen flex flex-col space-y-4'>
+<div class='h-auto w-96 p-2 bg-lime-100 rounded-2xl justify-between shadow-md'>
+<form action="{% url 'vote' q.id %}" method="post">
+{% csrf_token %}
+
+<fieldset>
+    <legend><h1 class="font-bold text-justify text-lime-900 text-xl p-2">{{ q.question_text }}</h1></legend>
+    <div class='flex flex-col gap-2 p-2'>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% for choice in q.choice_set.all %}
+        <div class='bg-lime-800 p-2 rounded-lg'>
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label class='font-semibold text-white p-2' for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        </div>
+    {% endfor %}
+    </div>
+</fieldset>
+<div class='flex justify-center items-center'>
+<input class='text-center p-3 font-semibold text-white bg-lime-800 w-20 rounded-full hover:bg-lime-900' type="submit" value="Votar">
+</div>
+</form>
+</div>
+</div>
+{% endblock content %}

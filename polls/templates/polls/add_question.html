@@ -1,0 +1,17 @@
+{% if state == 'get' %}
+<li class='p-3' id="current_edit">
+    <input type="text" name="question_text" value="">
+    <button hx-post="api/question/add"
+            hx-target="#current_edit"
+            hx-swap="OuterHTML"
+            hx-include="[name='question_text']"
+            class='text-white'>        
+        Guardar
+    </button>
+</li>
+
+{% elif state == 'success' %}
+<li>
+    <a href="{% url 'details' q.id %}">{{ q.question_text }}</a>
+</li>
+{% endif %}

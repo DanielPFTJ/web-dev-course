@@ -1,0 +1,5 @@
+
+
+{% for choice in question.choice_set.all %}
+    <li class='font-semibold text-white p-2'>{{ choice.choice_text }} | {{ choice.votes }} voto{{ choice.votes|pluralize }}</li>
+{% endfor %}
